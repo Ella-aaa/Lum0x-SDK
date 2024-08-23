@@ -37,23 +37,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var lum0x_sdk_1 = require("lum0x-sdk");
-lum0x_sdk_1.Lum0x.init('TEST_KEY');
-function test() {
+lum0x_sdk_1.Lum0x.init("TEST_KEY");
+var cursor;
+function getCastsByFid(cursor) {
     return __awaiter(this, void 0, void 0, function () {
-        var result;
+        var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, lum0x_sdk_1.Lum0x.farcasterReaction.getCastReaction({
-                        hash: "0xfe90f9de682273e05b201629ad2338bdcd89b6be",
-                        types: "likes",
-                        limit: 1, cursor: "eyJ0aW1lc3RhbXAiOiIyMDIzLTA3LTIwIDAyOjQwOjU0LjAwMDAwMDAifQ%3D%3D"
+                case 0: return [4 /*yield*/, lum0x_sdk_1.Lum0x.farcasterCast.getCastsByFid({
+                        fid: 602,
+                        parent_url: "https://warpcast.com/~/channel/airstack",
+                        limit: 150,
+                        cursor: cursor,
                     })];
                 case 1:
-                    result = _a.sent();
-                    console.log(result);
-                    return [2 /*return*/];
+                    data = _a.sent();
+                    console.log(data);
+                    return [2 /*return*/, data.result.next.cursor];
             }
         });
     });
 }
-test();
+//getCastsByFid 연달아 호출하는 함수 (getCastsByFid 호출시 limit의 최대값이 150을 넘겨서 호출하고 싶은 경우)
+function getBulkCastByFid(limit) {
+    return __awaiter(this, void 0, void 0, function () {
+        var count, i, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    count = limit / 150;
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < count)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, getCastsByFid(cursor)];
+                case 2:
+                    result = _a.sent();
+                    cursor = result;
+                    _a.label = 3;
+                case 3:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+getBulkCastByFid(250);

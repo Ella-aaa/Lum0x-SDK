@@ -19,10 +19,11 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    },
-  }, "ts-node": {
+    }
+  },
+  "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node",
+    "experimentalSpecifierResolution": "node"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
